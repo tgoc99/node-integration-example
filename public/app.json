@@ -20,9 +20,9 @@
     "appAssets": [
         {
             "src": "http://localhost:5000/service.zip",
-            "version": "0.2.0",
+            "version": "0.3.0",
             "alias": "node-service",
-            "target": "node_6.5.0.exe"
+            "target": "node.exe"
         }
     ]
 }

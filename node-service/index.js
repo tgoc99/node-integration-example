@@ -1,4 +1,5 @@
 const { connect } = require('hadouken-js-adapter');
+const fs = require('fs');
 
 //get the OpenFin port as a argument.
 const port = process.argv[process.argv.indexOf('--port') + 1];
@@ -18,25 +19,25 @@ const connectionOptions = {
 };
 let fin;
 
-function sendIABMessage() {
-    fin.InterApplicationBus.send(webAppIdentity, toWebTopic, {
-        data: 'Hello web',
-        timeStamp: Date.now()
-    });
-}
-
 function onConnected(f) {
     fin = f;
+    let start;
+    fin.System.getRvmInfo().then(info => {
+        console.log(info);
+    })
 
-    //use the inter application bus.
-    fin.InterApplicationBus.subscribe(webAppIdentity, toServiceTopic, (msg, senderIdentity) => {
-        console.log(`Received ${msg.data}
-            from ${senderIdentity.uuid}, ${senderIdentity.name}
-            at: ${new Date(msg.timeStamp).toLocaleTimeString()}`);
-    }).catch(err => console.log(err));
+    var filePath = 'C:\\Users\\thomasoconnor\\AppData\\Local\\OpenFin\\apps\\sec_1638792822\\app.log';
 
-    //send messages every second.
-    setInterval(sendIABMessage, 1000);
+    const read = () => {
+        const stream = fs.createReadStream(filePath, {encoding: 'utf8', start});
+
+        stream.on('data', data => {
+            fin.InterApplicationBus.publish('app-log', data);
+        });
+        start = fs.statSync(filePath).size;
+    };
+
+    setInterval(read, 1000);
 }
 
 //connect to the OpenFin runtime.

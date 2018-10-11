@@ -38,8 +38,8 @@ function onFinReady() {
     const timeStampCtrl = document.querySelector('#time');
 
     //subscribe to messages from the node service
-    fin.desktop.InterApplicationBus.subscribe(serviceUuid, toWebTopic, (msg, uuid) => {
-        messageCtrl.innerText = `Received ${msg.data} from ${uuid}`;
+    fin.desktop.InterApplicationBus.subscribe('*', 'app-log', (msg, uuid) => {
+        messageCtrl.innerText += `${msg}`;
         timeStampCtrl.innerText = new Date(msg.timeStamp).toLocaleTimeString();
     });
 
@@ -50,7 +50,7 @@ function onFinReady() {
     .catch(err => console.log(err));
 
     //send messages every second.
-    setInterval(sendIABMessage, 1000);
+    // setInterval(sendIABMessage, 1000);
 }
 
 //Once OpenFin is ready.

@@ -66,9 +66,9 @@ module.exports = function(grunt) {
                         },
                         appAssets: [{
                             src: target + '/service.zip',
-                            version: '0.2.0',
+                            version: '0.4.8',
                             alias: 'node-service',
-                            target: 'node_6.5.0.exe'
+                            target: 'node.exe'
                         }],
                         runtime: {
                             version: 'beta'
@@ -106,7 +106,7 @@ module.exports = function(grunt) {
 
     // Write a batch file that the app config will be pointing to to start the server
     grunt.registerTask('write_batch_file', function() {
-        grunt.file.write('node-service/service.bat', 'node_6.5.0.exe index.js');
+        grunt.file.write('node-service/service.bat', 'node.exe index.js');
     });
 
     grunt.loadNpmTasks('grunt-contrib-watch');
